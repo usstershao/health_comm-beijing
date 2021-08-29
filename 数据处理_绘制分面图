@@ -1,0 +1,29 @@
+##读取数
+data<-read.csv("spss.csv")
+
+#加载包
+library(reshape2)
+library(tidyverse)
+
+
+da<-melt(data,
+                id.vars = c('时间',"区域"),#需要保留不参与聚合的变量,
+                measure.vars = c("中医","针灸","中药","刮痧"),#用于聚合的变量,
+                variable.name='中医项目类别',
+                value.name='谷歌趋势指数')
+
+
+head(da)
+
+##绘制分面图
+
+da %>% 
+  ggplot(aes(x=时间, 
+             y=谷歌趋势指数, 
+             color=中医项目类别))+
+  geom_point()+
+  facet_wrap(~区域)+
+  ggtitle("2018年10月-2021年8月各国中医药谷歌趋势指数分面图",
+          subtitle = "按照时间顺序；分中医药项目类别"
+  )
+##以上 绘制数据的分面图
